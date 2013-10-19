@@ -1,0 +1,5 @@
+Ohai::Config[:disabled_plugins] = ["passwd"]
+
+chef_server_url "https://{{ groups['chef-server'][0] }}"
+environment "swift"
+node_name "{{ ansible_hostname }}"

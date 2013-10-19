@@ -1,0 +1,8 @@
+- hosts: chef-server
+  gather_facts: true
+
+- hosts: chef-clients
+  gather_facts: true
+  user: root
+  roles:
+    - chef-client

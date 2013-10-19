@@ -1,0 +1,4 @@
+- hosts: storage-servers
+  roles:
+    - common
+    - storage-server

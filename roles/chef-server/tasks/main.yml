@@ -1,0 +1,41 @@
+- name: Disable Firewall
+  service: name=iptables state=stopped
+
+- name: Install Chef Server
+  shell: curl -s -L https://raw.github.com/rcbops/support-tools/master/chef-install/install-chef-server.sh | bash creates=~/.chef/knife.rb
+
+- name: Create Temp Directory
+  local_action:
+    module: shell mkdir ./tmp creates=./tmp
+
+- name: Purge Validation Key
+  local_action: file path=./tmp/chef-validator.pem state=absent
+
+- name: Copy Validation Key
+  local_action:
+    module: shell scp -3 root@{{ groups['chef-server'][0] }}:/etc/chef-server/chef-validator.pem ./tmp/chef-validator.pem creates=./tmp/chef-validator.pem
+
+- name: Download EPEL Repo RPM
+  get_url: dest=/tmp/epel-release-6-8.noarch.rpm  url=http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  #when: ansible_os_family == 'RedHat' and ansible_lsb.major_release|int == 6
+
+- name: Install EPEL Repo RPM
+  yum: pkg=/tmp/epel-release-6-8.noarch.rpm state=installed
+
+- name: Install Berkshelf
+  shell: /opt/chef-server/embedded/bin/gem install berkshelf creates=/opt/chef-server/embedded/bin/berks
+
+- name: Checkout Cookbooks
+  git: repo=https://github.com/rcbops-cookbooks/swift-private-cloud.git dest=/srv/swift-private-cloud version=master
+
+- name: Berkshelf Install Dependencies
+  shell: /opt/chef-server/embedded/bin/berks install -p ../cookbooks chdir=/srv/swift-private-cloud
+
+- name: Upload Chef Environments
+  shell: /opt/chef-server/embedded/bin/knife environment from file ./environments/*.rb chdir=/srv/swift-private-cloud
+
+- name: Upload Chef Roles
+  shell: /opt/chef-server/embedded/bin/knife role from file ./roles/*.rb chdir=/srv/swift-private-cloud
+
+- name: Upload Chef Cookbooks
+  shell: /opt/chef-server/embedded/bin/knife cookbook upload --all -o . chdir=/srv/cookbooks
