@@ -1,12 +1,4 @@
 - name: Install Packages
   yum: name={{ item }} state=present
   with_items:
-    - git
-    - autoconf
-    - bison
-    - flex
-    - gcc
-    - gcc-c++
-    - kernel-devel
-    - make
-    - m4
+    - "@development"

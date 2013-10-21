@@ -7,7 +7,7 @@
     credentials: ~/.rackspace_cloud_credentials
     pub_key: ~/.ssh/id_rsa.pub
     region: IAD
-    flavor: 3
+    flavor: 4
     image: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d
     meta:
       group: swift

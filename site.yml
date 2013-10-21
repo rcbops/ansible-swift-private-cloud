@@ -4,3 +4,4 @@
 - include: proxy-servers.yml
 - include: storage-servers.yml
 - include: management-server.yml
+- include: proxy-servers.yml

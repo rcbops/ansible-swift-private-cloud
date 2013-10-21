@@ -13,7 +13,7 @@
 
 - name: Copy Validation Key
   local_action:
-    module: shell scp -3 root@{{ groups['chef-server'][0] }}:/etc/chef-server/chef-validator.pem ./tmp/chef-validator.pem creates=./tmp/chef-validator.pem
+    module: shell scp -B -C -q -v root@{{ groups['chef-server'][0] }}:/etc/chef-server/chef-validator.pem ./tmp/chef-validator.pem creates=./tmp/chef-validator.pem
 
 - name: Download EPEL Repo RPM
   get_url: dest=/tmp/epel-release-6-8.noarch.rpm  url=http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
@@ -26,7 +26,7 @@
   shell: /opt/chef-server/embedded/bin/gem install berkshelf creates=/opt/chef-server/embedded/bin/berks
 
 - name: Checkout Cookbooks
-  git: repo=https://github.com/rcbops-cookbooks/swift-private-cloud.git dest=/srv/swift-private-cloud version=master
+  git: repo=https://github.com/rcbops-cookbooks/swift-private-cloud.git dest=/srv/swift-private-cloud version=v4.1.3rc
 
 - name: Berkshelf Install Dependencies
   shell: /opt/chef-server/embedded/bin/berks install -p ../cookbooks chdir=/srv/swift-private-cloud

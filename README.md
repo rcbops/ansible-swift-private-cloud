@@ -88,6 +88,7 @@ This will:
 * Run the `spc-starter-storage` chef role on the servers in the `storage-servers` group.
 * Run the `spc-starter-proxy` chef role on the servers in the `proxy-severs` group.
 * Re-run the `spc-starter-controller` chef role on server in the `management-server` group to gather all the other nodes.
+* Re-run the `spc-starter-proxy` chef role on the proxy servers again to propgate all memcached servers addresses.
 
 While running `site.yml` runs everything, you can also run them role by role:
 
