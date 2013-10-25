@@ -1,0 +1,91 @@
+- name: Create Isolated Network
+  rax_network:
+    credentials: $credentials
+    label: swift_network
+    region: $region
+    cidr: 192.168.122.0/24
+    state: present
+  register: swift_network
+
+- name: Provision Chef Server
+  rax_server:
+    credentials: $credentials
+    service: cloudservers
+    name: swift-chef-server
+    flavor: $flavor
+    image: $image
+    region: $region
+    meta: $meta
+    nics:
+      - net-id: 00000000-0000-0000-0000-000000000000
+      - net-id: 11111111-1111-1111-1111-111111111111
+      - net-id: "{{ swift_network.instances[0].id }}"
+    files:
+      /root/.ssh/authorized_keys: $pub_key
+    wait: yes
+    state: present
+  register: swift_chef_server
+
+- name: Provision Management Server
+  rax_server:
+    credentials: $credentials
+    service: cloudservers
+    name: swift-management-server
+    flavor: $flavor
+    image: $image
+    region: $region
+    meta: $meta
+    nics:
+      - net-id: 00000000-0000-0000-0000-000000000000
+      - net-id: 11111111-1111-1111-1111-111111111111
+      - net-id: "{{ swift_network.instances[0].id }}"
+    files:
+      /root/.ssh/authorized_keys: $pub_key
+    wait: yes
+    state: present
+  register: swift_management_server
+
+- name: Provision Storage Servers
+  rax_server:
+    credentials: $credentials
+    service: cloudservers
+    name: swift-storage-server-$item
+    flavor: $flavor
+    image: $image
+    region: $region
+    meta: $meta
+    nics:
+      - net-id: 00000000-0000-0000-0000-000000000000
+      - net-id: 11111111-1111-1111-1111-111111111111
+      - net-id: "{{ swift_network.instances[0].id }}"
+    files:
+      /root/.ssh/authorized_keys: $pub_key
+    wait: yes
+    state: present
+  with_sequence: count=3
+  register: swift_storage_servers
+
+- name: Provision Proxy Servers
+  rax_server:
+    credentials: $credentials
+    service: cloudservers
+    name: swift-proxy-servers-$item
+    flavor: $flavor
+    image: $image
+    region: $region
+    meta: $meta
+    nics:
+      - net-id: 00000000-0000-0000-0000-000000000000
+      - net-id: 11111111-1111-1111-1111-111111111111
+      - net-id: "{{ swift_network.instances[0].id }}"
+    files:
+      /root/.ssh/authorized_keys: $pub_key
+    wait: yes
+    state: present
+  with_sequence: count=2
+  register: swift_proxy_servers
+
+- name: Create Inventory File
+  template:
+    src: inventory.j2
+    dest: ./rackspace
