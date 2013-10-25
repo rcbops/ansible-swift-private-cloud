@@ -1,4 +1,12 @@
 - name: Install Packages
   yum: name={{ item }} state=present
+  when: ansible_os_family == 'RedHat'
   with_items:
     - "@development"
+
+- name: Install Packages
+  apt: name={{ item }} state=present update_cache=true
+  when: ansible_os_family == 'Debian'
+  with_items:
+    - build-essential
+    - git

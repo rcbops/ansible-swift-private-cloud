@@ -1,18 +1,26 @@
+- name: Set Private Network Facts
+  set_fact:
+    chef_server_address: "{{ hostvars[groups['chef-server'][0] ].ansible_eth2.ipv4.address }}"
+    chef_server_hostname: "{{ hostvars[ groups['chef-server'][0] ].ansible_hostname }}"
+
 - name: Install Chef Client
   shell: curl -skS -L http://www.opscode.com/chef/install.sh | bash creates=/opt/chef
 
 - name: Add Chef Server Hosts Entry
-  action: host ip={{ item }} hostname={{ hostvars[item]['ansible_hostname'] }} state=present
-  with_items: groups['chef-server'][0]
+  action: host ip={{ chef_server_address }} hostname={{ chef_server_hostname }} state=present
 
 - name: Create Chef Client Directory
   shell: mkdir -p /etc/chef creates=/etc/chef
 
 - name: Upload Validation Key
-  local_action: shell scp -B -C -q -v ./tmp/chef-validator.pem root@{{ inventory_hostname }}:/etc/chef/validation.pem
+  copy:
+    src: "{{ inventory_dir }}/tmp/chef-validator.pem/{{ groups['chef-server'][0] }}/etc/chef-server/chef-validator.pem"
+    dest: /etc/chef/validation.pem
 
 - name: Configure Chef Client
-  template: src=./etc/chef/client.rb.j2 dest=/etc/chef/client.rb
+  template:
+    src: ./etc/chef/client.rb.j2
+    dest: /etc/chef/client.rb
 
 - name: Register Chef Client
   shell: chef-client creates=/etc/chef/client.pem

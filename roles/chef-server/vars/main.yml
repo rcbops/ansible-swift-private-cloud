@@ -1,0 +1,4 @@
+git:
+  url: https://github.com/rcbops-cookbooks/swift-private-cloud.git
+  version: master
+  dest: /srv/swift-private-cloud

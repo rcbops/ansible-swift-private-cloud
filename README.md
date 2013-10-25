@@ -9,10 +9,8 @@ Quick Install
 Install Ansible and PyRax
 -------------------------
 
-As of this writing, pyrax 1.5.3 is broken when creating cloud networks. The working branch works until 1.5.4 is out.
-
     $ [sudo] pip install ansible
-    $ [sudo] pip install git+git://github.com/rackspace/pyrax@working
+    $ [sudo] pip install pyrax
 
 Provision Servers
 -----------------
@@ -36,9 +34,9 @@ First, ensure you have a credentials file configured with your `username` and `a
 
 We're assuming you have an `~/.ssh/id_rsa.pub` and it will be uploaded to the root account.
 
-Then run the `provision/rackspace.yml` playbook:
+Then run the `rackspace.yml` playbook:
 
-    $ ansible-playbook provision/rackspace.yml
+    $ ansible-playbook rackspace.yml
 
 When this completes, it will create a hosts inventory file called `rackapace`:
 
@@ -61,6 +59,10 @@ When this completes, it will create a hosts inventory file called `rackapace`:
     management-server
     proxy-servers
     storage-servers
+
+By default this will spin up CentOS images. To use Ubuntu instead, override the image variable:
+
+    $ ansible-playbook rackspace.yml -e image=25de7af5-1668-46fb-bd08-9974b63a4806
 
 Once complete, ensure you can ssh to each instance properly:
 

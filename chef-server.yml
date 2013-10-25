@@ -1,5 +1,5 @@
 - hosts: chef-server
-  gather_facts: false
+  gather_facts: true
   roles:
     - build
     - chef-server
