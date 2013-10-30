@@ -1,4 +1,4 @@
-- name: Provision Swift Cluster
+- name: Provision Swift Cluster in Rackspace Public CLoud
   hosts: localhost
   connection: local
   gather_facts: false

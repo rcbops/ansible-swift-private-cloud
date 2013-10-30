@@ -1,0 +1,50 @@
+# Puppetlabs Ubuntu 12.04 x86_64
+# http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box
+#
+# Puppetlabs CentOS 6.4 x86_64
+# http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
+ 
+box: Puppetlabs CentOS 6.4 x86_64
+box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
+
+vagrant:
+  dir: ./tmp
+  env: ${env}
+  inventory: vagrant
+  pub_key: ~/.ssh/id_rsa.pub
+  box: ${box}
+  box_url: ${box_url}
+
+chef_server:
+  hostname: vagrant-chef-server
+  memory: 1024
+  cpus: 2
+  private_networks:
+    - 10.10.122.10
+    - 192.168.122.10
+
+management_server:
+  hostname: vagrant-management-server
+  memory: 1024
+  cpus: 2
+  private_networks:
+    - 10.10.122.20
+    - 192.168.122.20
+
+storage_server:
+  hostname: vagrant-storage-server
+  memory: 1024
+  cpus: 2
+  count: 3
+  private_networks:
+    - 10.10.122.3
+    - 192.168.122.3
+
+proxy_server:
+  hostname: vagrant-proxy-server
+  memory: 1024
+  cpus: 2
+  count: 3
+  private_networks:
+    - 10.10.122.4
+    - 192.168.122.4

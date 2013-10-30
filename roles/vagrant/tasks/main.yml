@@ -1,0 +1,27 @@
+- name: Create Vagrantfile
+  template:
+    src: ./Vagrantfile.j2
+    dest: ./${vagrant.dir}/Vagrantfile
+
+- name: Copy Public Key
+  shell: cp {{ vagrant.pub_key }} ./${vagrant.dir}/vagrant.pub
+
+- name: Provision Chef Server
+  command: vagrant up chef_server --provision chdir=${vagrant.dir}
+
+- name: Provision Management Server
+  command: vagrant up management_server --provision chdir=${vagrant.dir}
+
+- name: Provision Storage Servers
+  command: vagrant up storage_server_{{ item }} --provision chdir=${vagrant.dir}
+  with_sequence: count=${storage_server.count}
+
+- name: Provision Proxy Servers
+  command: vagrant up proxy_server_{{ item }} --provision chdir=${vagrant.dir}
+  with_sequence: count=${proxy_server.count}
+
+- name: Create Inventory File
+  action:
+    module: template
+    src: inventory.j2
+    dest: ./${vagrant.inventory}-${vagrant.env}

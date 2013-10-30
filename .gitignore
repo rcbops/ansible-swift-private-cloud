@@ -1,2 +1,3 @@
 tmp/
-/rackspace
+/rackspace-*
+/vagrant-*

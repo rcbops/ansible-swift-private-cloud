@@ -12,7 +12,7 @@
 
 - name: Download EPEL Repo RPM
   get_url: dest=/tmp/epel-release-6-8.noarch.rpm  url=http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release|int == 6
+  when: ansible_os_family == 'RedHat'
 
 - name: Install EPEL Repo RPM
   yum: pkg=/tmp/epel-release-6-8.noarch.rpm state=installed

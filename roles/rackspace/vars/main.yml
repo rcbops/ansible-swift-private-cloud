@@ -1,7 +1,18 @@
-credentials: ~/.rackspace_cloud_credentials
-pub_key: ~/.ssh/id_rsa.pub
-region: IAD
-flavor: 4
 image: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d
-meta:
-  group: swift
+
+rackspace:
+  env: ${env}
+  inventory: rackspace
+  credentials: ~/.rackspace_cloud_credentials
+  pub_key: ~/.ssh/id_rsa.pub
+  region: IAD
+  flavor: 4
+  image: ${image} 
+  meta:
+    group: swift
+
+storage_server:
+  count: 3
+
+proxy_server:
+  count: 2

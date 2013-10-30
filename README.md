@@ -12,8 +12,8 @@ Install Ansible and PyRax
     $ [sudo] pip install ansible
     $ [sudo] pip install pyrax
 
-Provision Servers
------------------
+Provision Servers in Rackspace Public Cloud
+-------------------------------------------
 
 This repo includes a playbook to provision a set of Rackspace Cloud Servers. It will create:
 
@@ -38,7 +38,7 @@ Then run the `rackspace.yml` playbook:
 
     $ ansible-playbook rackspace.yml
 
-When this completes, it will create a hosts inventory file called `rackapace`:
+When this completes, it will create a hosts inventory file called `rackapace-swift`:
 
     [management-server]
     192.0.2.2
@@ -66,7 +66,7 @@ By default this will spin up CentOS images. To use Ubuntu instead, override the 
 
 Once complete, ensure you can ssh to each instance properly:
 
-    $ ansible all -i rackspace -m command -a "whoami"
+    $ ansible all -i rackspace-swift -m command -a "whoami"
 
 Additional provision playbooks will be created on an as needed basis.
 
@@ -75,12 +75,37 @@ You can also create your own hosts inventory file and point it to already existi
 * the group names match the above names
 * you've already configured ssh public key access for the root account
 
+Provision Servers in Vagrant
+----------------------------
+
+This repo includes a playbook to provision a set of servers locally using Vagrant/VirtualBox. It will create:
+
+* Chef Server x 1
+* Management Server x 1
+* Storage Servers x 3
+* Proxy Servers x 2
+
+Each server will have 3 interfaces: eth0 (NAT), eth2 (Host Only 10.10.122.x), and eth3 (Host Only 192.168.122.x)
+
+First, ensure you have a working VirtualBox/Vagrant install.
+We're assuming you have an `~/.ssh/id_rsa.pub` and it will be uploaded to the root account.
+
+Then run the `vagrant.yml` playbook:
+
+    $ ansible-playbook vagrant.yml
+
+This will create an inventory file with the same groups specified above and wil be named `vagrant-swift`.
+
+By default, servers will be created usingthe Puppet Labs CentOS 6.4 base image. To use Ubuntu instead, override the `box` and `box_url` variables:
+
+    $ ansible-playbook vagrant.yml -e box="Puppetlabs Ubuntu 12.04 x86_64" box_url="http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box"
+
 Configure Servers
 -----------------
 
 To configure the servers in the inventory file, run the `site.yml`:
 
-    $ ansible-playbook -i rackspace site.yml
+    $ ansible-playbook -i rackspace-swift site.yml
 
 This will:
 
@@ -94,21 +119,21 @@ This will:
 
 While running `site.yml` runs everything, you can also run them role by role:
 
-    $ ansible-playbook -i rackspace chef-server.yml
-    $ ansible-playbook -i rackspace chef-clients.yml
-    $ ansible-playbook -i rackspace management-server.yml
+    $ ansible-playbook -i rackspace-swift chef-server.yml
+    $ ansible-playbook -i rackspace-swift chef-clients.yml
+    $ ansible-playbook -i rackspace-swift management-server.yml
     ...
 
 ...and even server by server:
 
-    $ ansible-playbook -i rackspace storage-servers.yml --limit 192.0.2.3
+    $ ansible-playbook -i rackspace-swift storage-servers.yml --limit 192.0.2.3
 
 Caveat Executor
 ===============
 
 This is just a first pass. Batteries not included. We are making some assumptions:
 
-* The isolated network being created matches the swift environment file: `192.168.122/0/24`
+* The isolated network being created matches the swift environment file: `192.168.122.0/24`
 * If you use your own servers instead, you have one network interface matching `192.168.122.0/24`
 * You can root ssh to these machines using ssh public keys. (This can probably be changed via `ansible.cfg` or command line args)
 * You're running CentOS 6.4. Ubuntu 12.04 needs to be cussed out.

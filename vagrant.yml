@@ -1,0 +1,6 @@
+- name: Provision Swift Cluster in Vagrant
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - vagrant

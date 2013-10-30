@@ -1,0 +1,68 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "{{ vagrant.box }}"
+  config.vm.box_url = "{{ vagrant.box_url }}"
+
+  config.vm.define :chef_server do |server|
+    server.vm.hostname = "{{ chef_server.hostname }}"
+    {% for private_network in chef_server.private_networks %}
+      server.vm.network :private_network, :ip => "{{ private_network }}"
+    {% endfor %}
+
+    server.vm.provider :virtualbox do |provider|
+      provider.customize ["modifyvm", :id, "--memory", "{{ chef_server.memory }}", "--cpus", "{{ chef_server.cpus }}"]
+    end
+
+    server.vm.provision :shell, :inline => "mkdir -p ~/.ssh"
+    server.vm.provision :shell, :inline => "cp /vagrant/vagrant.pub ~/.ssh/authorized_keys"
+  end
+
+  config.vm.define :management_server do |server|
+    server.vm.hostname = "{{ management_server.hostname }}"
+    {% for private_network in management_server.private_networks %}
+      server.vm.network :private_network, :ip => "{{ private_network }}"
+    {% endfor %}
+
+    server.vm.provider :virtualbox do |provider|
+      provider.customize ["modifyvm", :id, "--memory", "{{ management_server.memory }}", "--cpus", "{{ management_server.cpus }}"]
+    end
+
+    server.vm.provision :shell, :inline => "mkdir -p ~/.ssh"
+    server.vm.provision :shell, :inline => "cp /vagrant/vagrant.pub ~/.ssh/authorized_keys"
+  end
+
+  {% for i in range(1, storage_server.count+1) %}
+    config.vm.define :storage_server_{{ i }} do |server|
+      server.vm.hostname = "{{ storage_server.hostname }}-{{ i }}"
+      {% for private_network in storage_server.private_networks %}
+        server.vm.network :private_network, :ip => "{{ private_network }}{{ i }}"
+      {% endfor %}
+
+      server.vm.provider :virtualbox do |provider|
+        provider.customize ["modifyvm", :id, "--memory", "{{ storage_server.memory }}", "--cpus", "{{ storage_server.cpus }}"]
+      end
+
+      server.vm.provision :shell, :inline => "mkdir -p ~/.ssh"
+      server.vm.provision :shell, :inline => "cp /vagrant/vagrant.pub ~/.ssh/authorized_keys"
+    end
+  {% endfor %}
+
+  {% for i in range(1, proxy_server.count+1) %}
+    config.vm.define :proxy_server_{{ i }} do |server|
+      server.vm.hostname = "{{ proxy_server.hostname }}-{{ i }}"
+      {% for private_network in proxy_server.private_networks %}
+        server.vm.network :private_network, :ip => "{{ private_network }}{{ i }}"
+      {% endfor %}
+
+      server.vm.provider :virtualbox do |provider|
+        provider.customize ["modifyvm", :id, "--memory", "{{ proxy_server.memory }}", "--cpus", "{{ proxy_server.cpus }}"]
+      end
+
+      server.vm.provision :shell, :inline => "mkdir -p ~/.ssh"
+      server.vm.provision :shell, :inline => "cp /vagrant/vagrant.pub ~/.ssh/authorized_keys"
+    end
+  {% endfor %}
+
+end
