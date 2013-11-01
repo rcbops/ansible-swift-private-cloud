@@ -1,11 +1,8 @@
-# Puppetlabs Ubuntu 12.04 x86_64
-# http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box
-#
-# Puppetlabs CentOS 6.4 x86_64
-# http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
- 
-box: Puppetlabs CentOS 6.4 x86_64
-box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
+box: Puppetlabs Ubuntu 12.04 x86_64
+box_url: http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box
+
+#box:Puppetlabs CentOS 6.4 x86_64
+#box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box
 
 vagrant:
   dir: ./tmp

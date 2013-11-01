@@ -1,0 +1,9 @@
+export SERVICE_HOST={{ groups['management-server'][0] }}
+export NOVA_PROJECT_ID=admin
+export OS_AUTH_URL=http://{{ groups['management-server'][0] }}:5000/v2.0
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=secrete
+export OS_AUTH_STRATEGY=keystone
+export OS_REGION_NAME=RegionOne
+export OS_VERSION=2.0

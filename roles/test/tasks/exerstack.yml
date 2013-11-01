@@ -1,0 +1,22 @@
+- name: Install Packages
+  yum: name={{ item }} state=present
+  when: ansible_os_family == 'RedHat'
+  with_items:
+    - git
+
+- name: Install Packages
+  apt: name={{ item }} state=present
+  when: ansible_os_family == 'Debian'
+  with_items:
+    - git
+
+- name: Clone Test Repositories
+  git: repo=https://github.com/rcbops/${item} dest=/root/${item}
+  with_items:
+    - exerstack
+
+- name: Configure Exerstack
+  template: src=localrc.j2 dest=/root/exerstack/localrc
+
+- name: Run Exerstack Tests
+  shell: ./exercise.sh grizzly swift.sh chdir=/root/exerstack

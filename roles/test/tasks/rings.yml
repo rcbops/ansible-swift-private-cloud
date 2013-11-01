@@ -1,0 +1,28 @@
+- name: Create Rings
+  shell: swift-ring-builder ${item}.builder create 8 3 1 chdir=/etc/swift
+  with_items:
+    - object
+    - container
+    - account
+
+- name: Add Storage Nodes to Object Rings
+  shell: swift-ring-builder object.builder add z${item}-{{ groups['storage-servers'][item|int-1] }}:6000/disk1 100 chdir=/etc/swift
+  with_sequence: start=1 end=3
+
+- name: Add Storage Nodes to Container Rings
+  shell: swift-ring-builder container.builder add z${item}-{{ groups['storage-servers'][item|int-1] }}:6001/disk1 100 chdir=/etc/swift
+  with_sequence: start=1 end=3
+
+- name: Add Storage Nodes to Account Rings
+  shell: swift-ring-builder account.builder add z${item}-{{ groups['storage-servers'][item|int-1] }}:6002/disk1 100 chdir=/etc/swift
+  with_sequence: start=1 end=3
+
+- name: Rebalance Rings
+  shell: swift-ring-builder ${item}.builder rebalance chdir=/etc/swift
+  with_items:
+    - object
+    - container
+    - account
+
+- name: Fix Ring Ownerships
+  command: chown -Rv swift:swift /etc/swift

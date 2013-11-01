@@ -1,0 +1,36 @@
+# Create the three rings for william kellys alvins
+- hosts: management-server
+  gather_facts: true
+  tasks:
+    - include: roles/test/tasks/rings.yml
+
+# Create a ram disk to write too
+- hosts: storage-servers
+  gather_facts: true
+  tasks:
+    - include: roles/test/tasks/disks.yml
+
+# Copy the rings to the proxy/storage nodes
+- hosts:
+    - storage-servers
+    - proxy-servers
+  gather_facts: false
+  tasks:
+    - name: Copy Rings
+      shell: /usr/bin/swift-ring-minion-server -f -o
+
+# Restart all the services now that we have rings
+- hosts:
+    - storage-servers
+    - proxy-servers
+    - management-server
+  gather_facts: true
+  tasks:
+    - name: Start Services
+      shell: chef-client
+
+- hosts: management-server
+  gather_facts: true
+  tasks:
+    - include: roles/test/tasks/kong.yml
+    - include: roles/test/tasks/exerstack.yml

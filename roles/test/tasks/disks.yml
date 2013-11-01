@@ -1,0 +1,26 @@
+- name: Install Packages
+  yum: name={{ item }} state=present
+  when: ansible_os_family == 'RedHat'
+  with_items:
+    - xfsprogs
+
+- name: Install Packages
+  apt: name={{ item }} state=present
+  when: ansible_os_family == 'Debian'
+  with_items:
+    - xfsprogs
+
+- name: Create disk1 mount point
+  shell: mkdir -p /srv/node/disk1 creates=/srv/node/disk1
+
+- name: Unmout disk1
+  shell: umount /srv/node/disk1
+
+- name: Create Ram Disk
+  shell: mkfs.xfs -f -i size=512 /dev/ram0
+
+- name: Mount disk1
+  shell: mount /dev/ram0 /srv/node/disk1 -o noatime,nodiratime,nobarrier,logbufs=8
+
+- name: Chown disk1
+  shell: "chown -R swift: /srv/node/disk1"
