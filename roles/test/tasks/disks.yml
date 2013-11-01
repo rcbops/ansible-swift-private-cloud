@@ -14,7 +14,7 @@
   shell: mkdir -p /srv/node/disk1 creates=/srv/node/disk1
 
 - name: Unmout disk1
-  shell: umount /srv/node/disk1
+  shell: umount /srv/node/disk1;true
 
 - name: Create Ram Disk
   shell: mkfs.xfs -f -i size=512 /dev/ram0

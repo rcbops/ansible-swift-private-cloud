@@ -1,0 +1,30 @@
+{
+  "chef_type": "environment",
+    "cookbook_versions": {},
+    "description": "",
+    "json_class": "Chef::Environment",
+    "name": "swift-private-cloud",
+    "override_attributes": {
+      "swift-private-cloud": {
+        "swift_common": {
+          "swift_hash_prefix": "staticprefix",
+          "swift_hash_suffix": ""
+        },
+        "keystone": {
+          "admin_password": "secrete",
+          "auth_password": "secrete",
+          "ops_password": "swiftopsme",
+          "swift_admin_url": "http://{{ groups['proxy-servers'][0] }}:8080/v1/AUTH_%(tenant_id)s",
+          "swift_public_url": "http://{{ groups['proxy-servers'][0] }}:8080/v1/AUTH_%(tenant_id)s",
+          "swift_internal_url": "http://{{ groups['proxy-servers'][0] }}:8080/v1/AUTH_%(tenant_id)s"
+        },
+        "dispersion": {
+          "dis_key": "notautomaticallycreated"
+        },
+        "network": {
+          "exnet": "192.168.122.0/24",
+          "management": "192.168.122.0/24"
+        }
+      }
+    }
+}

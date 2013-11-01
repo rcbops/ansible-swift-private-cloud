@@ -6,8 +6,8 @@
     "keystone": {
         "auth_password": "secrete",
         "admin_password": "secrete",
-        "swift_admin_url": "",
-        "swift_public_url": "",
-        "swift_internal_url": ""
+        "swift_admin_url": "http://{{ groups['proxy-servers'][0] }}:8080/v1/AUTH_%(tenant_id)s",
+        "swift_public_url": "http://{{ groups['proxy-servers'][0] }}:8080/v1/AUTH_%(tenant_id)s",
+        "swift_internal_url": "http://{{ groups['proxy-servers'][0] }}:8080/v1/AUTH_%(tenant_id)s"
     }
 }

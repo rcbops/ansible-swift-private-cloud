@@ -27,6 +27,12 @@
 - name: Berkshelf Install Dependencies
   shell: /opt/chef-server/embedded/bin/berks install -p ../cookbooks chdir={{ git.dest }}
 
+- name: Drop Custom Environment
+  template: src=swift-private-cloud.json.j2 dest=/srv/swift-private-cloud/environments/swift-private-cloud.json
+
+- name: Upload Custom Environment
+  shell: /opt/chef-server/embedded/bin/knife environment from file ./environments/swift-private-cloud.json chdir={{ git.dest }}
+
 - name: Upload Chef Environments
   shell: /opt/chef-server/embedded/bin/knife environment from file ./environments/*.rb chdir={{ git.dest }}
 
