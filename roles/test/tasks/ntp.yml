@@ -1,0 +1,2 @@
+- name: Ensure NTP Clients Listen to Management
+  shell: test \$(echo 'monlist' | ntpdc | grep 192.168 | wc -l) -eq 5
