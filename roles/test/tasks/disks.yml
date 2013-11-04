@@ -13,7 +13,7 @@
 - name: Create disk1 mount point
   shell: mkdir -p /srv/node/disk1 creates=/srv/node/disk1
 
-- name: Unmout disk1
+- name: Unmount disk1
   shell: umount /srv/node/disk1;true
 
 - name: Create Ram Disk
