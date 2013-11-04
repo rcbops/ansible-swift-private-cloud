@@ -1,0 +1,7 @@
+- name: Ensure DSH connects to all nodes
+  shell: test \$(su swiftops -c "pdsh -g swift hostname -s" | grep -E -i -w 'swift-(proxy|storage)-server(s)?' | wc -l) -eq 5
+  when: ansible_os_family == 'RedHat'
+
+- name: Ensure DSH connects to all nodes
+  shell: test \$(su swiftops -c "dsh -Mcg swift hostname -s" | grep -E -i -w 'swift-(proxy|storage)-server(s)?' | wc -l) -eq 5
+  when: ansible_os_family == 'Debian'
