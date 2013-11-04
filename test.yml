@@ -29,8 +29,10 @@
     - name: Start Services
       shell: chef-client
 
+# Run the testfuls
 - hosts: management-server
   gather_facts: true
   tasks:
     - include: roles/test/tasks/kong.yml
     - include: roles/test/tasks/exerstack.yml
+    - include: roles/test/tasks/mail.yml

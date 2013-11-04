@@ -1,0 +1,38 @@
+- name: Empty Remote Mail Queues
+  shell: su swiftops -c "pdsh -g swift exim -bp | awk '/^ *[0-9]+[mhd]/{print \"exim -Mrm \" $3}' | bash"
+  when: ansible_os_family == 'RedHat'
+
+- name: Empty Remote Mail Queues
+  shell: su swiftops -c "dsh -Mcg swift exim -bp | awk '/^ *[0-9]+[mhd]/{print \"exim -Mrm \" $3}' | bash"
+  when: ansible_os_family == 'Debian'
+
+- name: Empty Local Mail Queue
+  shell: exim -bp | awk '/^ *[0-9]+[mhd]/{print "exim -Mrm " $3}' | bash
+
+- name: Reset IpTables OUTPUT
+  shell: iptables -F OUTPUT
+
+- name: Block Outgoing SMTP
+  shell: iptables -I OUTPUT 1 -p tcp -m tcp --dport 25 -j REJECT
+
+- name: Send email from managed nodes
+  shell: su swiftops -c "pdsh -g swift mailx -s testing test@rackspace.com \</dev/null"
+  when: ansible_os_family == 'RedHat'
+
+- name: Send email from managed nodes
+  shell: su swiftops -c "dsh -Mcg swift mailx -s testing test@rackspace.com \</dev/null"
+  when: ansible_os_family == 'Debian'
+
+- name: Flush remote mail queues
+  shell: su swiftops -c "pdsh -g swift sudo exim -qf -v"
+  when: ansible_os_family == 'RedHat'
+
+- name: Flush remote mail queues
+  shell: su swiftops -c "dsh -Mcg swift sudo exim -qf -v"
+  when: ansible_os_family == 'Debian'
+
+- name: Flush local mail queue
+  shell: exim -qf -v
+
+- name: Check Firewall for mail delivery attempts
+  shell: test ! \$(iptables -L OUTPUT 1 -v | xargs | cut -d' ' -f1) -eq 0
