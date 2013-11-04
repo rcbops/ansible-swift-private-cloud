@@ -40,3 +40,4 @@
     - include: roles/test/tasks/recon.yml
     - include: roles/test/tasks/dispersion.yml
     - include: roles/test/tasks/ntp.yml
+    - include: roles/test/tasks/logging.yml

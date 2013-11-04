@@ -1,0 +1,10 @@
+- name: Restart All Services to Log
+  shell: su swiftops -c "pdsh -g swift sudo swift-init all restart"
+  when: ansible_os_family == 'RedHat'
+
+- name: Restart All Services to Log
+  shell: su swiftops -c "dsh -Mcg swift sudo swift-init all restart"
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure remote logs exist
+  shell: test \$(ls /var/log/swift/{storage,proxy,jobs,drive-audit,swift-object-expirer}.log | wc -l) -eq 5 executable=/bin/bash
