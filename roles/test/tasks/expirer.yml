@@ -1,0 +1,2 @@
+- name: Ensure Object Expirer is Running
+  shell: test ! \$(pgrep -f object-expirer | wc -l) -eq 0

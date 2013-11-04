@@ -41,3 +41,4 @@
     - include: roles/test/tasks/dispersion.yml
     - include: roles/test/tasks/ntp.yml
     - include: roles/test/tasks/logging.yml
+    - include: roles/test/tasks/expirer.yml
