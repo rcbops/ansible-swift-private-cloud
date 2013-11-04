@@ -1,0 +1,5 @@
+- name: Populate Dispersion
+  shell: swift-dispersion-populate
+
+- name: Chef Dispersion Reports
+  shell: swift-dispersion-report | grep '100.00%' | grep '6 of 6'
