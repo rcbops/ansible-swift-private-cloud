@@ -67,10 +67,10 @@ By default this will spin up CentOS images. To use Ubuntu instead, override the 
 
 The following options can be overriden using `-e`:
 
-* image: Set the glance image to be used. Default: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d (CentOS 6.4)
-* flavor: Set the flavor to be used. Default: 4  (2GB Standard Instance)
-* region: Set the region to operate in. Default: IAD
-* prefix: Set the prefix when naming servers/inventory files. Default: ""
+* `image`: Set the glance image to be used. Default: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d (CentOS 6.4)
+* `flavor`: Set the flavor to be used. Default: 4  (2GB Standard Instance)
+* `region`: Set the region to operate in. Default: IAD
+* `prefix`: Set the prefix when naming servers/inventory files. Default: ""
 
 Once complete, ensure you can ssh to each instance properly:
 
