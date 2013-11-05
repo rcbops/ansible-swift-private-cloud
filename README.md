@@ -10,6 +10,7 @@ Install Ansible and PyRax
 -------------------------
 
     $ [sudo] pip install ansible
+    $ [sudo] pip install markupsafe
     $ [sudo] pip install pyrax
 
 Provision Servers in Rackspace Public Cloud
@@ -63,6 +64,13 @@ When this completes, it will create a hosts inventory file called `rackapace-swi
 By default this will spin up CentOS images. To use Ubuntu instead, override the image variable:
 
     $ ansible-playbook rackspace.yml -e image=25de7af5-1668-46fb-bd08-9974b63a4806
+
+The following options can be overriden using `-e`:
+
+* image: Set the glance image to be used. Default: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d (CentOS 6.4)
+* flavor: Set the flavor to be used. Default: 4  (2GB Standard Instance)
+* region: Set the region to operate in. Default: IAD
+* prefix: Set the prefix when naming servers/inventory files. Default: ""
 
 Once complete, ensure you can ssh to each instance properly:
 
@@ -127,6 +135,13 @@ While running `site.yml` runs everything, you can also run them role by role:
 ...and even server by server:
 
     $ ansible-playbook -i rackspace-swift storage-servers.yml --limit 192.0.2.3
+
+Running Tests
+-------------
+
+This repository includes a `test.yml` playbook/role that runs all of the tests that are being run in Jenkins against the current inventory/cluster.
+
+    $ ansible-playbook -i rackspace-swift test.yml
 
 Caveat Executor
 ===============
