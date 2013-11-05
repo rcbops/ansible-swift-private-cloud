@@ -1,12 +1,14 @@
 image: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d
+flavor: 4
+region: IAD
 
 rackspace:
   env: ${env}
   inventory: rackspace
   credentials: ~/.rackspace_cloud_credentials
   pub_key: ~/.ssh/id_rsa.pub
-  region: IAD
-  flavor: 4
+  region: ${region}
+  flavor: ${flavor}
   image: ${image} 
   meta:
     group: swift

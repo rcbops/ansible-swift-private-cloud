@@ -33,10 +33,10 @@
 - hosts: management-server
   gather_facts: true
   tasks:
-    #- include: roles/test/tasks/kong.yml
-    #- include: roles/test/tasks/exerstack.yml
+    - include: roles/test/tasks/kong.yml
+    - include: roles/test/tasks/exerstack.yml
     - include: roles/test/tasks/dsh.yml
-    #- include: roles/test/tasks/mail.yml
+    - include: roles/test/tasks/mail.yml
     - include: roles/test/tasks/recon.yml
     - include: roles/test/tasks/dispersion.yml
     - include: roles/test/tasks/ntp.yml

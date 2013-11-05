@@ -10,7 +10,7 @@
 - name: Provision Chef Server
   rax_server:
     credentials: ${rackspace.credentials}
-    name: swift-chef-server
+    name: ${prefix}swift-chef-server
     flavor: ${rackspace.flavor}
     image: ${rackspace.image}
     region: ${rackspace.region}
@@ -28,7 +28,7 @@
 - name: Provision Management Server
   rax_server:
     credentials: ${rackspace.credentials}
-    name: swift-management-server
+    name: ${prefix}swift-management-server
     flavor: ${rackspace.flavor}
     image: ${rackspace.image}
     region: ${rackspace.region}
@@ -46,7 +46,7 @@
 - name: Provision Storage Servers
   rax_server:
     credentials: ${rackspace.credentials}
-    name: swift-storage-server-${item}
+    name: ${prefix}swift-storage-server-${item}
     flavor: ${rackspace.flavor}
     image: ${rackspace.image}
     region: ${rackspace.region}
@@ -65,7 +65,7 @@
 - name: Provision Proxy Servers
   rax_server:
     credentials: ${rackspace.credentials}
-    name: swift-proxy-servers-${item}
+    name: ${prefix}swift-proxy-servers-${item}
     flavor: ${rackspace.flavor}
     image: ${rackspace.image}
     region: ${rackspace.region}
@@ -84,4 +84,4 @@
 - name: Create Inventory File
   template:
     src: inventory.j2
-    dest: ./${rackspace.inventory}-${rackspace.env}
+    dest: ./${prefix}${rackspace.inventory}-${rackspace.env}
