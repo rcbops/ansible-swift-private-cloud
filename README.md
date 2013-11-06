@@ -13,6 +13,12 @@ Install Ansible and PyRax
     $ [sudo] pip install markupsafe
     $ [sudo] pip install pyrax
 
+Create a default hosts file for ansible.
+
+    # file: /etc/ansible/hosts
+	[local]
+	localhost
+	
 Provision Servers in Rackspace Public Cloud
 -------------------------------------------
 
