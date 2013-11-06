@@ -47,6 +47,7 @@
   rax_server:
     credentials: ${rackspace.credentials}
     name: ${prefix}swift-storage-server-${item}
+    disk_config: manual
     flavor: ${rackspace.flavor}
     image: ${rackspace.image}
     region: ${rackspace.region}
