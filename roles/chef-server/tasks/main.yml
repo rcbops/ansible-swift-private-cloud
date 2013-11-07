@@ -19,7 +19,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Install Berkshelf
-  shell: /opt/chef-server/embedded/bin/gem install berkshelf creates=/opt/chef-server/embedded/bin/berks
+  shell: /opt/chef-server/embedded/bin/gem install berkshelf --no-ri --no-rdoc creates=/opt/chef-server/embedded/bin/berks
 
 - name: Checkout Cookbooks
   git: repo={{ git.url }} dest={{ git.dest }} version={{ git.version }}
