@@ -41,7 +41,7 @@ proxy_server:
   hostname: vagrant-proxy-server
   memory: 1024
   cpus: 2
-  count: 3
+  count: 2
   private_networks:
     - 10.10.122.4
     - 192.168.122.4
