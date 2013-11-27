@@ -1,3 +1,6 @@
+- name: Ensure Vagrant Directory Exists
+  shell: mkdir -p {{ vagrant.dir }}
+
 - name: Create Vagrantfile
   template:
     src: ./Vagrantfile.j2
