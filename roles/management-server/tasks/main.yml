@@ -2,4 +2,4 @@
   #template: src=./etc/chef/chef-client.json.j2 dest=/etc/chef/chef-client.json
 
 - name: Chef Management Role
-  shell: chef-client -o "role[spc-starter-controller]" -L "/etc/chef/chef-client.log"
+  shell: chef-client -E swift-private-cloud -o "role[spc-starter-controller]" -L "/etc/chef/chef-client.log"
