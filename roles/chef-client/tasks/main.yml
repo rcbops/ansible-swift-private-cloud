@@ -4,7 +4,7 @@
     chef_server_hostname: "{{ hostvars[ groups['chef-server'][0] ].ansible_hostname }}"
 
 - name: Install Chef Client
-  shell: curl -skS -L http://www.opscode.com/chef/install.sh | bash creates=/opt/chef
+  shell: curl -skS -L http://www.opscode.com/chef/install.sh | bash -s -- -v 11.8.2 creates=/opt/chef
 
 - name: Add Chef Server Hosts Entry
   action: host ip={{ chef_server_address }} hostname={{ chef_server_hostname }} state=present
