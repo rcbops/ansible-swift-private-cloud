@@ -37,7 +37,7 @@
   shell: /opt/chef-server/embedded/bin/knife environment from file ./environments/*.rb chdir={{ git.dest }}
 
 - name: Upload Chef Roles
-  shell: /opt/chef-server/embedded/bin/knife role from file ./roles/*.rb chdir={{ git.dest }}
+  shell: /opt/chef-server/embedded/bin/knife role from file ./roles/*.rb -E swift-private-cloud chdir={{ git.dest }}
 
 - name: Upload Chef Cookbooks
-  shell: /opt/chef-server/embedded/bin/knife cookbook upload --all -o . chdir=/srv/cookbooks
+  shell: /opt/chef-server/embedded/bin/knife cookbook upload -E swift-private-cloud --all -o . chdir=/srv/cookbooks

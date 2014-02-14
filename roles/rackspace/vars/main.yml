@@ -1,7 +1,8 @@
-image: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d
-flavor: 4
+# image: e0ed4adb-3a00-433e-a0ac-a51f1bc1ea3d
+# flavor: 4
+image: 80fbcb55-b206-41f9-9bc2-2dd7aac6c061
 region: IAD
-
+flavor: performance1-2
 rackspace:
   env: ${env}
   inventory: rackspace
